@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://csnmdg27442j2"
+path="res://.godot/imported/ladder.obj-dcb7b0a4b475aa48a74b6ef574048204.mesh"
+
+[deps]
+
+files=["res://.godot/imported/ladder.obj-dcb7b0a4b475aa48a74b6ef574048204.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/ladder.obj"
+dest_files=["res://.godot/imported/ladder.obj-dcb7b0a4b475aa48a74b6ef574048204.mesh", "res://.godot/imported/ladder.obj-dcb7b0a4b475aa48a74b6ef574048204.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

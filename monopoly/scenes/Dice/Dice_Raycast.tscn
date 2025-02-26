@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dg6dqql8jwmqo"]
+
+[ext_resource type="Script" path="res://scenes/Dice/dice_raycast.gd" id="1_uwgc2"]
+
+[node name="DiceRaycast" type="RayCast3D"]
+script = ExtResource("1_uwgc2")

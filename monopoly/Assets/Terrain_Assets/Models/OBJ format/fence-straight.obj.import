@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dt01wujtq7kfg"
+path="res://.godot/imported/fence-straight.obj-6e5cda0e7c1de2a5e6f17e2cdac8baaf.mesh"
+
+[deps]
+
+files=["res://.godot/imported/fence-straight.obj-6e5cda0e7c1de2a5e6f17e2cdac8baaf.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/fence-straight.obj"
+dest_files=["res://.godot/imported/fence-straight.obj-6e5cda0e7c1de2a5e6f17e2cdac8baaf.mesh", "res://.godot/imported/fence-straight.obj-6e5cda0e7c1de2a5e6f17e2cdac8baaf.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

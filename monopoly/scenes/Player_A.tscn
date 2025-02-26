@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://c6jat8h074lku"]
+
+[ext_resource type="Script" path="res://scripts/Helper/Player_Helper.gd" id="1_2t67h"]
+[ext_resource type="PackedScene" uid="uid://bm1uxl0mh2vy1" path="res://scenes/Knight_Model.tscn" id="2_i07rf"]
+[ext_resource type="Script" path="res://scripts/Object/Player.gd" id="3_nllbl"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4iy3u"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_58k71"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.4975, 6.92485, 15.988)
+script = ExtResource("1_2t67h")
+
+[node name="Knight" parent="." instance=ExtResource("2_i07rf")]
+unique_name_in_owner = true
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -0.966298, 0)
+script = ExtResource("3_nllbl")
+
+[node name="Skeleton3D" type="Skeleton3D" parent="Knight"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_4iy3u")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+transform = Transform3D(-1, -4.57536e-09, 8.7303e-08, 0, 0.99863, 0.052336, -8.74228e-08, 0.052336, -0.99863, 0, 0, 0)
+shape = SubResource("SphereShape3D_58k71")
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+unique_name_in_owner = true

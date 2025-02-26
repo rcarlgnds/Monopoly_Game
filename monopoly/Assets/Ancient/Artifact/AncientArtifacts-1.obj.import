@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bjlekabr5xmc2"
+path="res://.godot/imported/AncientArtifacts-1.obj-2d3b6a7610403595651b15997ae3989f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/AncientArtifacts-1.obj-2d3b6a7610403595651b15997ae3989f.mesh"]
+
+source_file="res://Assets/Ancient/Artifact/AncientArtifacts-1.obj"
+dest_files=["res://.godot/imported/AncientArtifacts-1.obj-2d3b6a7610403595651b15997ae3989f.mesh", "res://.godot/imported/AncientArtifacts-1.obj-2d3b6a7610403595651b15997ae3989f.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

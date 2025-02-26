@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cpekbe5fif6gn"
+path="res://.godot/imported/block-snow-large-slope.obj-5a9bda6004bb17e8691bed16dcab10be.mesh"
+
+[deps]
+
+files=["res://.godot/imported/block-snow-large-slope.obj-5a9bda6004bb17e8691bed16dcab10be.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/block-snow-large-slope.obj"
+dest_files=["res://.godot/imported/block-snow-large-slope.obj-5a9bda6004bb17e8691bed16dcab10be.mesh", "res://.godot/imported/block-snow-large-slope.obj-5a9bda6004bb17e8691bed16dcab10be.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

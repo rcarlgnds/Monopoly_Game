@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dyqkukbv12y3h"
+path="res://.godot/imported/platform-overhang.obj-38d836c38a0ff48ed1f3b545f047cc32.mesh"
+
+[deps]
+
+files=["res://.godot/imported/platform-overhang.obj-38d836c38a0ff48ed1f3b545f047cc32.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/platform-overhang.obj"
+dest_files=["res://.godot/imported/platform-overhang.obj-38d836c38a0ff48ed1f3b545f047cc32.mesh", "res://.godot/imported/platform-overhang.obj-38d836c38a0ff48ed1f3b545f047cc32.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,0 +1,72 @@
+[gd_scene load_steps=10 format=3 uid="uid://23482x0qvq6b"]
+
+[ext_resource type="Shader" path="res://scripts/Map/water.gdshader" id="1_10j20"]
+[ext_resource type="Script" path="res://scripts/Game_Manager.gd" id="1_lfc1m"]
+[ext_resource type="Script" path="res://scripts/Helper/Map_Helper.gd" id="2_1esjd"]
+[ext_resource type="Script" path="res://scripts/Camera/Spectator_Camera.gd" id="4_hmt27"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_l6rss"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_kqoeu"]
+sky_material = SubResource("ProceduralSkyMaterial_l6rss")
+
+[sub_resource type="Environment" id="Environment_r60x1"]
+background_mode = 2
+sky = SubResource("Sky_kqoeu")
+tonemap_mode = 2
+volumetric_fog_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cowbk"]
+size = Vector2(150, 150)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aa0a5"]
+render_priority = 0
+shader = ExtResource("1_10j20")
+shader_parameter/WATER_COL = Vector4(0.04, 0.38, 0.88, 1)
+shader_parameter/WATER2_COL = Vector4(0.04, 0.35, 0.78, 1)
+shader_parameter/FOAM_COL = Vector4(0.8125, 0.9609, 0.9648, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(5, 5)
+shader_parameter/height = 2.0
+shader_parameter/wave_size = Vector2(2, 2)
+shader_parameter/wave_speed = 1.5
+
+[node name="World" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.9095, 9.39045, 24.638)
+script = ExtResource("1_lfc1m")
+
+[node name="Environment" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.60765, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, -33.3671, -3.15024, -2.3379)
+light_volumetric_fog_energy = 0.5
+light_angular_distance = 2.0
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_r60x1")
+
+[node name="Water" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.6441, 0.817822, 21.4001)
+mesh = SubResource("PlaneMesh_cowbk")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_aa0a5")
+
+[node name="Map" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.2881, 3.46948, -7.2274)
+script = ExtResource("2_1esjd")
+
+[node name="Camera" type="Node3D" parent="Map"]
+script = ExtResource("4_hmt27")
+
+[node name="Spectator_1" type="Camera3D" parent="Map/Camera"]
+transform = Transform3D(-0.707107, 0.454519, -0.541675, 0, 0.766044, 0.642788, 0.707107, 0.454519, -0.541675, 23.09, 10, 1.95)
+
+[node name="Spectator_2" type="Camera3D" parent="Map/Camera"]
+transform = Transform3D(0.707107, -0.454519, 0.541675, 0, 0.766044, 0.642788, -0.707107, -0.454519, 0.541675, 85.57, 10, 64.28)
+
+[node name="Spectator_Dice" type="Camera3D" parent="Map/Camera"]
+transform = Transform3D(0.707107, -0.527131, 0.47131, 0, 0.666532, 0.745476, -0.707107, -0.527131, 0.47131, 64.92, 11.49, 43.97)

@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://tc5qelr0ua6s"
+path="res://.godot/imported/door-rotate-large.obj-9cfd50cd7d84e43c3c37d14a1daed682.mesh"
+
+[deps]
+
+files=["res://.godot/imported/door-rotate-large.obj-9cfd50cd7d84e43c3c37d14a1daed682.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/door-rotate-large.obj"
+dest_files=["res://.godot/imported/door-rotate-large.obj-9cfd50cd7d84e43c3c37d14a1daed682.mesh", "res://.godot/imported/door-rotate-large.obj-9cfd50cd7d84e43c3c37d14a1daed682.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

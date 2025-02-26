@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://clkqem3wnrw4n"
+path="res://.godot/imported/block-grass-large-slope-steep-narrow.obj-999b172e26ec25d963e26307906b8559.mesh"
+
+[deps]
+
+files=["res://.godot/imported/block-grass-large-slope-steep-narrow.obj-999b172e26ec25d963e26307906b8559.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/block-grass-large-slope-steep-narrow.obj"
+dest_files=["res://.godot/imported/block-grass-large-slope-steep-narrow.obj-999b172e26ec25d963e26307906b8559.mesh", "res://.godot/imported/block-grass-large-slope-steep-narrow.obj-999b172e26ec25d963e26307906b8559.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

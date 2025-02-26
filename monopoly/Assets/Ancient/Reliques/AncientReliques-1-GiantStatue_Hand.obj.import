@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b4t1qysdithtl"
+path="res://.godot/imported/AncientReliques-1-GiantStatue_Hand.obj-4e11159a2ab3298f6072b4e0eb494b35.mesh"
+
+[deps]
+
+files=["res://.godot/imported/AncientReliques-1-GiantStatue_Hand.obj-4e11159a2ab3298f6072b4e0eb494b35.mesh"]
+
+source_file="res://Assets/Ancient/Reliques/AncientReliques-1-GiantStatue_Hand.obj"
+dest_files=["res://.godot/imported/AncientReliques-1-GiantStatue_Hand.obj-4e11159a2ab3298f6072b4e0eb494b35.mesh", "res://.godot/imported/AncientReliques-1-GiantStatue_Hand.obj-4e11159a2ab3298f6072b4e0eb494b35.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

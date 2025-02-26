@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://csp3sf3o6vn0p"
+path="res://.godot/imported/block-snow-edge.obj-6e5081b4230b58bb6233cec77435fcbd.mesh"
+
+[deps]
+
+files=["res://.godot/imported/block-snow-edge.obj-6e5081b4230b58bb6233cec77435fcbd.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/block-snow-edge.obj"
+dest_files=["res://.godot/imported/block-snow-edge.obj-6e5081b4230b58bb6233cec77435fcbd.mesh", "res://.godot/imported/block-snow-edge.obj-6e5081b4230b58bb6233cec77435fcbd.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

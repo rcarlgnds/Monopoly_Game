@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://safpohymqs5p"
+path="res://.godot/imported/AncientReliques-5-Collumn.obj-79915a61c623d560e716a25c43f7324e.mesh"
+
+[deps]
+
+files=["res://.godot/imported/AncientReliques-5-Collumn.obj-79915a61c623d560e716a25c43f7324e.mesh"]
+
+source_file="res://Assets/Ancient/Reliques/AncientReliques-5-Collumn.obj"
+dest_files=["res://.godot/imported/AncientReliques-5-Collumn.obj-79915a61c623d560e716a25c43f7324e.mesh", "res://.godot/imported/AncientReliques-5-Collumn.obj-79915a61c623d560e716a25c43f7324e.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

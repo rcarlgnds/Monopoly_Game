@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cxj6fr0uawe02"
+path="res://.godot/imported/block-grass-overhang-edge.obj-93f6c16df56e1ba88d71ed0b1f995aab.mesh"
+
+[deps]
+
+files=["res://.godot/imported/block-grass-overhang-edge.obj-93f6c16df56e1ba88d71ed0b1f995aab.mesh"]
+
+source_file="res://Assets/Terrain_Assets/Models/OBJ format/block-grass-overhang-edge.obj"
+dest_files=["res://.godot/imported/block-grass-overhang-edge.obj-93f6c16df56e1ba88d71ed0b1f995aab.mesh", "res://.godot/imported/block-grass-overhang-edge.obj-93f6c16df56e1ba88d71ed0b1f995aab.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
