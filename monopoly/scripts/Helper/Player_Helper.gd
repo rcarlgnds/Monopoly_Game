@@ -10,7 +10,7 @@ const TILE_SIZE = 2.0  # Ukuran tile (sesuai dengan ukuran map)
 
 @export_group("Camera")
 @onready var _camera_pivot: Node3D = %CameraPivot
-@onready var model_animation: Node3D = %Knight
+@onready var model_animation = get_node("Knight")
 
 @onready var player_camera = %Camera3D
 
@@ -94,7 +94,7 @@ func jump():
 		print("No tiles available!")
 		return
 
-	# 1. Cari dl tile terdekat dari posisi sekarang
+	# 1. Cari tile terdekat dari posisi sekarang
 	var current_tile = find_nearest_tile(position, tile_array)
 	if current_tile == null:
 		print("No tile found near player position!")
@@ -107,32 +107,56 @@ func jump():
 		return
 	
 	# 3. Tentukan tile target
-	var next_index = current_index + 1
-	
-	# Ini biar bs balik ke tile pertama kl uda di tile terakhir
-	if next_index >= tile_array.size():
-		next_index = 0  # Reset ke tile pertama
-	
-	var next_tile = tile_array[next_index]
-	var jump_target = next_tile.tile_coordinate + Vector3(0, 5.5, 0) 
+	var next_index = current_index - 1
+	if next_index < 0:
+		next_index = tile_array.size() - 1 
 
-	# 4. Hitung vektor arah ke target
+	var next_tile = tile_array[next_index]
+	var tile_size = 6.5  # Ukuran tile (berdasarkan pola koordinat)
+	var offset = 2  # Seberapa jauh player lompat ke luar
+
+	# 4. Hitung vektor perubahan posisi antar tile
+	var delta = next_tile.tile_coordinate - current_tile.tile_coordinate
+
+	# 5. Tentukan arah lompat berdasarkan delta
+	var jump_target = next_tile.tile_coordinate
+
+	if abs(delta.x) > abs(delta.z):  
+		if delta.x > 0: 
+			jump_target += Vector3(0, 5.5, -offset)
+		else: 
+			jump_target += Vector3(0, 5.5, offset)
+	else:  
+		if delta.z > 0:  
+			jump_target += Vector3(offset, 5.5, 0)
+		else: 
+			jump_target += Vector3(-offset, 5.5, 0)
+
+	# 6. Hitung arah ke target
 	var direction = (jump_target - position).normalized()
 
-	# 5. Konversi arah ke rotasi Yaw
+	# 7. Konversi arah ke rotasi Yaw
 	var target_rotation = atan2(direction.x, direction.z)
+	var current_yaw = global_rotation.y
+	
+	var diff = target_rotation - current_yaw
+	if diff > PI:
+		diff -= TAU
+	elif diff < -PI:
+		diff += TAU
+	var shortest_target = current_yaw + diff
 
-	# 6. Buat muter dl sebelum lompat
+	# 8. Buat muter dulu sebelum lompat
 	var tween = get_tree().create_tween()
-	tween.tween_property(self, "global_rotation:y", target_rotation, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	await tween.finished  
+	tween.tween_property(self, "global_rotation:y", shortest_target, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	await tween.finished
 
-	# 7. Animasi lompat
+	# 9. Animasi lompat
 	tween = get_tree().create_tween()
 	tween.tween_property(self, "position", jump_target, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	#model_animation.jump_animation()
 	
 	print("Jumping to:", jump_target, "(Tile Index:", next_index, ") Facing Direction:", direction)
+
 
 func jumps(dice_result: int):
 	# Lompat sesuai angka yang didapat

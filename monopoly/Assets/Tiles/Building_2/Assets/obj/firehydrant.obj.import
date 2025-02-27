@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://8fkyp5m6o2wn"
+path="res://.godot/imported/firehydrant.obj-7d6a7a6eef2def531b37c598bb044f31.mesh"
+
+[deps]
+
+files=["res://.godot/imported/firehydrant.obj-7d6a7a6eef2def531b37c598bb044f31.mesh"]
+
+source_file="res://Assets/Tiles/Building_2/Assets/obj/firehydrant.obj"
+dest_files=["res://.godot/imported/firehydrant.obj-7d6a7a6eef2def531b37c598bb044f31.mesh", "res://.godot/imported/firehydrant.obj-7d6a7a6eef2def531b37c598bb044f31.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

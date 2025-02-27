@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://be1m6noo7efqv"
+path="res://.godot/imported/trash_B.obj-6e2bf2d2801c0092a7b65b8df5edf19a.mesh"
+
+[deps]
+
+files=["res://.godot/imported/trash_B.obj-6e2bf2d2801c0092a7b65b8df5edf19a.mesh"]
+
+source_file="res://Assets/Tiles/Building_2/Assets/obj/trash_B.obj"
+dest_files=["res://.godot/imported/trash_B.obj-6e2bf2d2801c0092a7b65b8df5edf19a.mesh", "res://.godot/imported/trash_B.obj-6e2bf2d2801c0092a7b65b8df5edf19a.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

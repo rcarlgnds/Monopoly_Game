@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://yoblms04venv"
+path="res://.godot/imported/skyscraperD.obj-1fa3d5492468c9d0e72b5263de58c5b2.mesh"
+
+[deps]
+
+files=["res://.godot/imported/skyscraperD.obj-1fa3d5492468c9d0e72b5263de58c5b2.mesh"]
+
+source_file="res://Assets/Tiles/Building_1/Models/OBJ format/skyscraperD.obj"
+dest_files=["res://.godot/imported/skyscraperD.obj-1fa3d5492468c9d0e72b5263de58c5b2.mesh", "res://.godot/imported/skyscraperD.obj-1fa3d5492468c9d0e72b5263de58c5b2.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

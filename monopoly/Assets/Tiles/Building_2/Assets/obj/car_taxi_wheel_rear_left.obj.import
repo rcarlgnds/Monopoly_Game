@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bm6sw8rp5qmmy"
+path="res://.godot/imported/car_taxi_wheel_rear_left.obj-bc5ea89763d91a2c13577e0cfdbd1006.mesh"
+
+[deps]
+
+files=["res://.godot/imported/car_taxi_wheel_rear_left.obj-bc5ea89763d91a2c13577e0cfdbd1006.mesh"]
+
+source_file="res://Assets/Tiles/Building_2/Assets/obj/car_taxi_wheel_rear_left.obj"
+dest_files=["res://.godot/imported/car_taxi_wheel_rear_left.obj-bc5ea89763d91a2c13577e0cfdbd1006.mesh", "res://.godot/imported/car_taxi_wheel_rear_left.obj-bc5ea89763d91a2c13577e0cfdbd1006.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

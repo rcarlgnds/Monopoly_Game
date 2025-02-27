@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ckg41jmau66j0"
+path="res://.godot/imported/car_hatchback.obj-e563d91f7c278af1f851f1fa6d317066.mesh"
+
+[deps]
+
+files=["res://.godot/imported/car_hatchback.obj-e563d91f7c278af1f851f1fa6d317066.mesh"]
+
+source_file="res://Assets/Tiles/Building_2/Assets/obj/car_hatchback.obj"
+dest_files=["res://.godot/imported/car_hatchback.obj-e563d91f7c278af1f851f1fa6d317066.mesh", "res://.godot/imported/car_hatchback.obj-e563d91f7c278af1f851f1fa6d317066.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false
