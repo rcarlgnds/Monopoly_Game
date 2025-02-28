@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://c6jat8h074lku"]
+[gd_scene load_steps=5 format=3 uid="uid://c6jat8h074lku"]
 
-[ext_resource type="Script" path="res://scripts/Helper/Player_Helper.gd" id="1_2t67h"]
-[ext_resource type="PackedScene" uid="uid://bm1uxl0mh2vy1" path="res://scenes/Knight_Model.tscn" id="2_i07rf"]
-[ext_resource type="Script" path="res://scripts/Object/Player.gd" id="3_nllbl"]
+[ext_resource type="Script" path="res://scripts/Helper/Player_Helper.gd" id="1_d0up2"]
+[ext_resource type="PackedScene" uid="uid://bm1uxl0mh2vy1" path="res://scenes/Player/Model/Knight_Model.tscn" id="2_p5nq3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4iy3u"]
 
@@ -10,12 +9,12 @@
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.4975, 6.92485, 15.988)
-script = ExtResource("1_2t67h")
+script = ExtResource("1_d0up2")
 
-[node name="Knight" parent="." instance=ExtResource("2_i07rf")]
+[node name="Knight" parent="." instance=ExtResource("2_p5nq3")]
 unique_name_in_owner = true
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, -0.966298, 0)
-script = ExtResource("3_nllbl")
+script = null
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Knight"]
 

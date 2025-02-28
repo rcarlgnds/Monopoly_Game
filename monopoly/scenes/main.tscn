@@ -63,10 +63,10 @@ script = ExtResource("2_1esjd")
 script = ExtResource("4_hmt27")
 
 [node name="Spectator_1" type="Camera3D" parent="Map/Camera"]
-transform = Transform3D(-0.707107, 0.454519, -0.541675, 0, 0.766044, 0.642788, 0.707107, 0.454519, -0.541675, 23.09, 10, 1.95)
+transform = Transform3D(-0.920505, 0.367167, -0.133638, 0, 0.34202, 0.939693, 0.390731, 0.864991, -0.314831, 57.67, 43.62, 43.13)
 
 [node name="Spectator_2" type="Camera3D" parent="Map/Camera"]
-transform = Transform3D(0.707107, -0.454519, 0.541675, 0, 0.766044, 0.642788, -0.707107, -0.454519, 0.541675, 85.57, 10, 64.28)
+transform = Transform3D(0.707107, -0.454519, 0.541675, 0, 0.766044, 0.642787, -0.707107, -0.454519, 0.541675, 103.74, 15, 83.04)
 
 [node name="Spectator_Dice" type="Camera3D" parent="Map/Camera"]
-transform = Transform3D(0.707107, -0.527131, 0.47131, 0, 0.666532, 0.745476, -0.707107, -0.527131, 0.47131, 64.92, 11.49, 43.97)
+transform = Transform3D(0.707107, -0.689534, 0.156658, 0, 0.221548, 0.97515, -0.707107, -0.689534, 0.156658, 66.74, 24.42, 47.19)

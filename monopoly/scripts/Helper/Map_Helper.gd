@@ -98,8 +98,8 @@ func create_center_tiles(map: Map):
 	var center_x = (map.size_a - center_tile_count) / 2.0
 	var center_z = (map.size_b - center_tile_count) / 2.0
 
-	var tile_scale_factor = 2.5
-	var fence_scale_factor = 2.3
+	var tile_scale_factor = 2.3
+	var fence_scale_factor = 2
 
 	# 🟦 Buat center tiles
 	for dx in range(center_tile_count):
@@ -132,7 +132,7 @@ func create_center_tiles(map: Map):
 	for i in range(4):
 		var fence_instance = fence_scene.instantiate()
 		if fence_instance:
-			fence_instance.position = fence_positions[i] + Vector3(0, 3, 0)  # 🔼 Naikkan tinggi pagar
+			fence_instance.position = fence_positions[i] + Vector3(0, 4, 0)  # 🔼 Naikkan tinggi pagar
 			fence_instance.rotation_degrees.y = fence_rotations[i]  # Putar pagar sesuai posisinya
 			fence_instance.scale = Vector3(
 				map.tile_scale * fence_scale_factor, 

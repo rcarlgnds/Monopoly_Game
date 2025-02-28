@@ -21,7 +21,7 @@ func _ready():
 	start_pos = global_position
 
 func roll_dice_at_position(pos):
-	global_position = pos + Vector3(25, 10, 25)  
+	global_position = pos + Vector3(35, 20, 35)  
 	_roll()
 
 func _roll():
@@ -43,15 +43,10 @@ func _roll():
 func _on_sleeping_state_changed() -> void:
 	print("Sleeping: ", sleeping)
 	if sleeping:
-		#await get_tree().create_timer(1.5).timeout
-
-		print("Dictionary dice_values:", dice_values)  # Cek isi dictionary
-		print("Dadu berhenti, memeriksa raycast...")
-
 		var landed_value = null
 
 		for raycast in raycasts:
-			raycast.force_raycast_update()  # Paksa update raycast
+			raycast.force_raycast_update()
 			var is_hit = raycast.is_colliding()
 		
 			print("Is Hit: ", is_hit)

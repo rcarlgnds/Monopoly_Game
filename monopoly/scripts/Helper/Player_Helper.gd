@@ -1,5 +1,21 @@
 extends CharacterBody3D
 
+# Object
+var id: String
+var nickname: String
+var skin: String
+var current_tile: int
+var money: float
+
+func init_player(p_id: String, p_nickname: String, p_skin: String):
+	id = p_id
+	nickname = p_nickname
+	skin = p_skin
+	current_tile = 0
+	money = 50.0
+	
+
+
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const TILE_SIZE = 2.0  # Ukuran tile (sesuai dengan ukuran map)
@@ -112,30 +128,55 @@ func jump():
 		next_index = tile_array.size() - 1 
 
 	var next_tile = tile_array[next_index]
-	var tile_size = 6.5  # Ukuran tile (berdasarkan pola koordinat)
-	var offset = 2  # Seberapa jauh player lompat ke luar
+	var tile_size = 6.5 
+	var offset = 2 
 
-	# 4. Hitung vektor perubahan posisi antar tile
-	var delta = next_tile.tile_coordinate - current_tile.tile_coordinate
+	# 4. Hitung batas koordinat untuk deteksi tile pojok
+	var min_x = tile_array[0].tile_coordinate.x
+	var max_x = min_x
+	var min_z = tile_array[0].tile_coordinate.z
+	var max_z = min_z
 
-	# 5. Tentukan arah lompat berdasarkan delta
-	var jump_target = next_tile.tile_coordinate
+	for tile in tile_array:
+		min_x = min(min_x, tile.tile_coordinate.x)
+		max_x = max(max_x, tile.tile_coordinate.x)
+		min_z = min(min_z, tile.tile_coordinate.z)
+		max_z = max(max_z, tile.tile_coordinate.z)
 
-	if abs(delta.x) > abs(delta.z):  
-		if delta.x > 0: 
-			jump_target += Vector3(0, 5.5, -offset)
-		else: 
-			jump_target += Vector3(0, 5.5, offset)
-	else:  
-		if delta.z > 0:  
-			jump_target += Vector3(offset, 5.5, 0)
-		else: 
-			jump_target += Vector3(-offset, 5.5, 0)
+	# 5. Cek apakah next_tile adalah tile pojok
+	var is_corner_tile = (
+		(next_tile.tile_coordinate.x == min_x and next_tile.tile_coordinate.z == min_z) or  # Pojok kiri atas
+		(next_tile.tile_coordinate.x == max_x and next_tile.tile_coordinate.z == min_z) or  # Pojok kanan atas
+		(next_tile.tile_coordinate.x == min_x and next_tile.tile_coordinate.z == max_z) or  # Pojok kiri bawah
+		(next_tile.tile_coordinate.x == max_x and next_tile.tile_coordinate.z == max_z)     # Pojok kanan bawah
+	)
 
-	# 6. Hitung arah ke target
+	# 6. Jika tile pojok, lompat ke tengahnya
+	var jump_target
+	if is_corner_tile:
+		jump_target = next_tile.tile_coordinate + Vector3(0, 6.5, 0)  # Lompat ke tengah tile
+	else:
+		# 7. Hitung vektor perubahan posisi antar tile
+		var delta = next_tile.tile_coordinate - current_tile.tile_coordinate
+
+		# 8. Tentukan arah lompat berdasarkan delta
+		jump_target = next_tile.tile_coordinate
+
+		if abs(delta.x) > abs(delta.z):  
+			if delta.x > 0: 
+				jump_target += Vector3(0, 5.5, offset)
+			else: 
+				jump_target += Vector3(0, 5.5, -offset)
+		else:  
+			if delta.z > 0:  
+				jump_target += Vector3(-offset, 5.5, 0)
+			else: 
+				jump_target += Vector3(offset, 5.5, 0)
+
+	# 9. Hitung arah ke target
 	var direction = (jump_target - position).normalized()
 
-	# 7. Konversi arah ke rotasi Yaw
+	# 10. Konversi arah ke rotasi Yaw
 	var target_rotation = atan2(direction.x, direction.z)
 	var current_yaw = global_rotation.y
 	
@@ -146,12 +187,12 @@ func jump():
 		diff += TAU
 	var shortest_target = current_yaw + diff
 
-	# 8. Buat muter dulu sebelum lompat
+	# 11. Buat muter dulu sebelum lompat
 	var tween = get_tree().create_tween()
 	tween.tween_property(self, "global_rotation:y", shortest_target, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	await tween.finished
 
-	# 9. Animasi lompat
+	# 12. Animasi lompat
 	tween = get_tree().create_tween()
 	tween.tween_property(self, "position", jump_target, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
@@ -163,6 +204,7 @@ func jumps(dice_result: int):
 	for i in range(dice_result):
 		jump()
 		await get_tree().create_timer(0.8).timeout
+
 
 func find_nearest_tile(player_pos: Vector3, tile_objects):
 	"""Cari tile terdekat dengan posisi player berdasarkan koordinatnya."""
@@ -221,3 +263,6 @@ func _on_dice_roll_finished(dice_result: int):
 	if pending_dice_rolls == 0:  # Jika semua dadu sudah selesai
 		print("Total hasil dadu:", total_dice_result)
 		jumps(total_dice_result)  # Lompat sesuai hasil total
+
+func get_data():
+	return "WOW"

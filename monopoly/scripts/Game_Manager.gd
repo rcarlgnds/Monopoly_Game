@@ -1,20 +1,27 @@
 extends Node3D
 
 var map_generator: Node
-@onready var player_scene = preload("res://scenes/Player_A.tscn")  
+
 @onready var camera_manager = $Map/Camera
 
 var player  
 var tile_objects = []  
 
-var PlayerHelper = load("res://scripts/Helper/Player_Helper.gd")
-var player_helper = PlayerHelper.new()  
+
+# Player
+var Players = []
+var PlayerHelper = preload("res://scripts/Helper/Player_Helper.gd").new()
+var player_scenes = {
+	"Knight": preload("res://scenes/Player/Instance/Knight.tscn"),
+	"Mage": preload("res://scenes/Player/Instance/Mage.tscn")
+}
+
 
 func _ready():
 	set_process_input(true)
 
 	# Buat instance map baru
-	var map = Map.new(9, 9, 6.5, -0.2, 3.2, "Default")
+	var map = Map.new(9, 9, 8.5, -1, 4, "Default")
 
 	map_generator = preload("res://scripts/Helper/Map_Helper.gd").new()
 	add_child(map_generator)
@@ -28,6 +35,13 @@ func _ready():
 
 	map_generator.create_map(map)  # Generate map
 
+func create_player(p_id: String, p_nickname: String, p_skin: String) -> Node3D:
+	var player_instance = knight_scene.instantiate()  # Buat instance player dari scene
+	player_instance.init_player(p_id, p_nickname, p_skin)  # Set ID, Nickname, Skin, dll.
+	add_child(player_instance)  # Tambahkan ke scene game
+	return player_instance
+	
+	
 func _set_player_position():
 	if map_generator.has_method("get_tiles"):
 		tile_objects = map_generator.get_tiles()  
@@ -42,14 +56,18 @@ func _set_player_position():
 	else:
 		print("ERROR: map_generator tidak memiliki method get_tiles!")
 
-func spawn_player(spawn_pos: Vector3):
-	if player == null:
-		player = player_scene.instantiate()
-		add_child(player)
-		print("Player spawned!")
 
-		player.set_spawn_position(spawn_pos)
-		player.set_tile_objects(tile_objects)
+
+func spawn_player(spawn_pos: Vector3):
+	var new_player = create_player("001", "IO", "Knight")
+	add_child(new_player)
+	
+	Players.append(new_player)
+	new_player.set_spawn_position(spawn_pos)
+	new_player.set_tile_objects(tile_objects)
+	
+	print("Player spawned:", new_player.nickname)
+
 
 func _input(event):
 	if event.is_action_pressed("down"):
