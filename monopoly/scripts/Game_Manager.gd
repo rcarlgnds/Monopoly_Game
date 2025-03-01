@@ -5,16 +5,14 @@ var map_generator: Node
 @onready var camera_manager = $Map/Camera
 
 var player  
-var tile_objects = []  
 
-
-# Player
-var Players = []
 var PlayerHelper = preload("res://scripts/Helper/Player_Helper.gd").new()
-var player_scenes = {
-	"Knight": preload("res://scenes/Player/Instance/Knight.tscn"),
-	"Mage": preload("res://scenes/Player/Instance/Mage.tscn")
-}
+@onready var knight_scene = preload("res://scenes/Player/Model/Knight_Model.tscn")
+#@onready var mage_scene = preload("res://scenes/Player/Model/Mage_Model.tscn")
+
+# Data
+var players = []
+var tiles = []  
 
 
 func _ready():
@@ -35,20 +33,21 @@ func _ready():
 
 	map_generator.create_map(map)  # Generate map
 
+
 func create_player(p_id: String, p_nickname: String, p_skin: String) -> Node3D:
-	var player_instance = knight_scene.instantiate()  # Buat instance player dari scene
-	player_instance.init_player(p_id, p_nickname, p_skin)  # Set ID, Nickname, Skin, dll.
-	add_child(player_instance)  # Tambahkan ke scene game
+	var player_instance = knight_scene.instantiate()  
+	player_instance.init_player(p_id, p_nickname, p_skin) 
+	add_child(player_instance) 
 	return player_instance
 	
 	
 func _set_player_position():
 	if map_generator.has_method("get_tiles"):
-		tile_objects = map_generator.get_tiles()  
-		print("Tiles Generated:", tile_objects.size())  
+		tiles = map_generator.get_tiles()  
+		print("Tiles Generated:", tiles.size())  
 
-		if tile_objects.size() > 0:
-			var first_tile = tile_objects[0]  
+		if tiles.size() > 0:
+			var first_tile = tiles[0]  
 			var first_tile_pos = first_tile.tile_coordinate + Vector3(0, 5, 0)  
 			spawn_player(first_tile_pos)
 		else:
@@ -59,14 +58,15 @@ func _set_player_position():
 
 
 func spawn_player(spawn_pos: Vector3):
-	var new_player = create_player("001", "IO", "Knight")
-	add_child(new_player)
+	var player_1 = create_player("001", "IO", "Knight")
+	add_child(player_1)
 	
-	Players.append(new_player)
-	new_player.set_spawn_position(spawn_pos)
-	new_player.set_tile_objects(tile_objects)
+	players.append(player_1)
+	player_1.set_spawn_position(spawn_pos)
+	player_1.set_tile_objects(tiles)
 	
-	print("Player spawned:", new_player.nickname)
+	
+	print("Player spawned:", player_1.nickname)
 
 
 func _input(event):

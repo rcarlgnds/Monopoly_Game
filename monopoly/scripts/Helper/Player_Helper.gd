@@ -15,25 +15,34 @@ func init_player(p_id: String, p_nickname: String, p_skin: String):
 	money = 50.0
 	
 
+# Animation
+@onready var model = $Rig
+@onready var anim_tree = $AnimationTree
+@onready var anim_state = $AnimationTree.get("parameters/playback")
 
-const SPEED = 5.0
+var melee_attack_animation = [
+	"One_Handed_A",
+	"One_Handed_B",
+	"One_Handed_C",
+	"Dual_A",
+	"Dual_B",
+	"Kick"
+]
+
+var magic_attack_animation = [
+	"Magic_A",
+	"Magic_B"
+]
+
+var ranged_attack_animation = [
+	"Shoot",
+	"Kick"
+]
+
 const JUMP_VELOCITY = 4.5
-const TILE_SIZE = 2.0  # Ukuran tile (sesuai dengan ukuran map)
-
-#@onready var game_manager = get_tree().get_root().get_node("Game_Manager")
-@export var sens = 0.002  
-@export_range(0.0, 1.0) var mouse_sensitivity := 0.25
-
-@export_group("Camera")
-@onready var _camera_pivot: Node3D = %CameraPivot
-@onready var model_animation = get_node("Knight")
-
-@onready var player_camera = %Camera3D
-
-
+var jumping = false
+var last_floor = true
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
-var _camera_input_direction := Vector2.ZERO
-var _last_movement_direction := Vector3.BACK
 
 # Buat dapetin tiles object dr game manager
 var tile_array = []
@@ -45,15 +54,11 @@ func set_tile_objects(tiles):
 
 
 func _ready():
-	await get_tree().process_frame  # Tunggu satu frame agar semua node siap
+	await get_tree().process_frame  
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-	# Load dice scene secara manual jika belum diassign
 
-func _input(event):
-	if event.is_action_pressed("left_click"):
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		
+func _input(event):		
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -62,32 +67,27 @@ func _input(event):
 
 	if Input.is_action_just_pressed("up"):
 		roll_and_jump()
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	var is_camera_motion := (
-		event is InputEventMouseMotion and 
-		Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
-	)
 	
-	if is_camera_motion:
-		_camera_input_direction = event.screen_relative * mouse_sensitivity
 		
-
 func _physics_process(delta: float) -> void:
-	_camera_pivot.rotation.x += _camera_input_direction.y * delta
-	_camera_pivot.rotation.x = clamp(_camera_pivot.rotation.x, -PI / 6.0, PI / 3.0)
-	_camera_pivot.rotation.y -= _camera_input_direction.x * delta
-	
-	_camera_input_direction = Vector2.ZERO
-	
+	if Input.is_action_just_pressed("jump") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+		jumping = true
+		anim_tree.set("parameters/conditions/jumping", true)
+		anim_tree.set("parameters/conditions/grounded", false)
+	if is_on_floor() and not last_floor:
+		jumping = false
+		anim_tree.set("parameters/conditions/jumping", false)
+		anim_tree.set("parameters/conditions/grounded", true)
+	if not is_on_floor() and not jumping:
+		anim_state.travel("Jump_Idle")
+		anim_tree.set("parameters/conditions/grounded", false)
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-		
+	
+	last_floor = is_on_floor()
 	move_and_slide()
+
 
 func get_center_position(map_size: int, tile_size: float) -> Vector3:
 	# Pastikan map_size adalah jumlah tile (bukan panjang total)
@@ -203,7 +203,7 @@ func jumps(dice_result: int):
 	# Lompat sesuai angka yang didapat
 	for i in range(dice_result):
 		jump()
-		await get_tree().create_timer(0.8).timeout
+		await get_tree().create_timer(1.2).timeout
 
 
 func find_nearest_tile(player_pos: Vector3, tile_objects):
@@ -263,6 +263,4 @@ func _on_dice_roll_finished(dice_result: int):
 	if pending_dice_rolls == 0:  # Jika semua dadu sudah selesai
 		print("Total hasil dadu:", total_dice_result)
 		jumps(total_dice_result)  # Lompat sesuai hasil total
-
-func get_data():
-	return "WOW"
+		
