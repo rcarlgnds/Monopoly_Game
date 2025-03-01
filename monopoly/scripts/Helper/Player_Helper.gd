@@ -153,8 +153,9 @@ func jump():
 
 	# 6. Jika tile pojok, lompat ke tengahnya
 	var jump_target
+	var jump_height = 6.5
 	if is_corner_tile:
-		jump_target = next_tile.tile_coordinate + Vector3(0, 6.5, 0)  # Lompat ke tengah tile
+		jump_target = next_tile.tile_coordinate + Vector3(0, jump_height, 0) 
 	else:
 		# 7. Hitung vektor perubahan posisi antar tile
 		var delta = next_tile.tile_coordinate - current_tile.tile_coordinate
@@ -164,14 +165,14 @@ func jump():
 
 		if abs(delta.x) > abs(delta.z):  
 			if delta.x > 0: 
-				jump_target += Vector3(0, 5.5, offset)
+				jump_target += Vector3(0, jump_height, offset)
 			else: 
-				jump_target += Vector3(0, 5.5, -offset)
+				jump_target += Vector3(0, jump_height, -offset)
 		else:  
 			if delta.z > 0:  
-				jump_target += Vector3(-offset, 5.5, 0)
+				jump_target += Vector3(-offset, jump_height, 0)
 			else: 
-				jump_target += Vector3(offset, 5.5, 0)
+				jump_target += Vector3(offset, jump_height, 0)
 
 	# 9. Hitung arah ke target
 	var direction = (jump_target - position).normalized()
@@ -194,7 +195,7 @@ func jump():
 
 	# 12. Animasi lompat
 	tween = get_tree().create_tween()
-	tween.tween_property(self, "position", jump_target, 0.5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "position", jump_target, 0.4).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	
 	print("Jumping to:", jump_target, "(Tile Index:", next_index, ") Facing Direction:", direction)
 
@@ -239,7 +240,7 @@ func roll_and_jump():
 
 	var dice_positions = [
 		get_center_position(11, 2) + Vector3(33, 5, 15),
-		get_center_position(11, 2) + Vector3(27, 5, 15)  # Tambah jarak biat kaga nabrak daduny
+		get_center_position(11, 2) + Vector3(25, 5, 17)  # Tambah jarak biat kaga nabrak daduny
 	]
 
 	total_dice_result = 0  # Reset hasil total

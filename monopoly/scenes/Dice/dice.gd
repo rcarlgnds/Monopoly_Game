@@ -21,7 +21,7 @@ func _ready():
 	start_pos = global_position
 
 func roll_dice_at_position(pos):
-	global_position = pos + Vector3(35, 20, 35)  
+	global_position = pos + Vector3(35, 15, 35)  
 	_roll()
 
 func _roll():
@@ -63,7 +63,7 @@ func _on_sleeping_state_changed() -> void:
 
 		if landed_value != null:
 			roll_finished.emit(landed_value)  # Kirim sinyal dengan angka dadu
-			await get_tree().create_timer(3.0).timeout  # Tunggu sebelum hapus
+			await get_tree().create_timer(2.0).timeout  # Tunggu sebelum hapus
 			queue_free()  # Hapus dadu
 		else:
 			print("❌ ERROR: Tidak ada raycast yang mendeteksi tabrakan!")

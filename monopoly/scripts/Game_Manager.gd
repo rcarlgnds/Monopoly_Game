@@ -7,10 +7,14 @@ var map_generator: Node
 var player  
 
 var PlayerHelper = preload("res://scripts/Helper/Player_Helper.gd").new()
-@onready var knight_scene = preload("res://scenes/Player/Model/Knight_Model.tscn")
-#@onready var mage_scene = preload("res://scenes/Player/Model/Mage_Model.tscn")
+@onready var knight = preload("res://scenes/Player/Model/Knight_Model.tscn")
+@onready var mage = preload("res://scenes/Player/Model/Mage_Model.tscn")
+@onready var barbarian = preload("res://scenes/Player/Model/Barbarian_Model.tscn")
+@onready var assassin = preload("res://scenes/Player/Model/Assassin_Model.tscn")
+@onready var rogue = preload("res://scenes/Player/Model/Rogue_Model.tscn")
 
-# Data
+# Data 
+var turn = 1
 var players = []
 var tiles = []  
 
@@ -35,11 +39,27 @@ func _ready():
 
 
 func create_player(p_id: String, p_nickname: String, p_skin: String) -> Node3D:
-	var player_instance = knight_scene.instantiate()  
+	var player_instance
+	
+	match p_skin:
+		"Knight":
+			player_instance = knight.instantiate()
+		"Mage":
+			player_instance = mage.instantiate()
+		"Barbarian":
+			player_instance = barbarian.instantiate()
+		"Assassin":
+			player_instance = assassin.instantiate()
+		"Rogue":
+			player_instance = rogue.instantiate()
+		_:
+			print("WARNING: Skin tidak dikenal, default ke Knight.")
+			player_instance = knight.instantiate() 
+			
 	player_instance.init_player(p_id, p_nickname, p_skin) 
 	add_child(player_instance) 
 	return player_instance
-	
+
 	
 func _set_player_position():
 	if map_generator.has_method("get_tiles"):
@@ -58,7 +78,7 @@ func _set_player_position():
 
 
 func spawn_player(spawn_pos: Vector3):
-	var player_1 = create_player("001", "IO", "Knight")
+	var player_1 = create_player("001", "IO", "Barbarian")
 	add_child(player_1)
 	
 	players.append(player_1)
