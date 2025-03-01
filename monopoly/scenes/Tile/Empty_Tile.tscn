@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://by1qx44gt11du"]
+
+[ext_resource type="PackedScene" uid="uid://btrxks5ty38l4" path="res://Assets/Terrain_Assets/Models/GLB format/block-grass-large.glb" id="1_yh50n"]
+
+[node name="block-grass-large2" instance=ExtResource("1_yh50n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00247371, 0.00181603, 0.00152421)

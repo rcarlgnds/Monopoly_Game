@@ -54,10 +54,27 @@ func create_map(map: Map):
 
 
 func create_tile(x: int, z: int, map: Map) -> Tile:
-	var tile_asset_path = "res://Assets/Terrain_Assets/Models/GLB format/block-grass-large.glb"
+	# Path untuk tile sudut (corner)
+	var corner_a_path = "res://scenes/Tile/Corner.tscn"
+	var corner_b_path = "res://scenes/Tile/Corner.tscn"
+	var corner_c_path = "res://scenes/Tile/Corner.tscn"
+	var corner_d_path = "res://scenes/Tile/Corner.tscn"
+	var tile_asset_path = "res://scenes/Tile/Stage_3.tscn" 
+	
+	# Tentukan apakah tile berada di sudut
+	if x == 0 and z == 0:
+		tile_asset_path = corner_a_path
+	elif x == map.size_a - 1 and z == 0:
+		tile_asset_path = corner_b_path
+	elif x == 0 and z == map.size_b - 1:
+		tile_asset_path = corner_c_path
+	elif x == map.size_a - 1 and z == map.size_b - 1:
+		tile_asset_path = corner_d_path
+
+	# Load tile yang sesuai
 	var tile_scene = load(tile_asset_path)
 	if not tile_scene:
-		print("ERROR: Model GLB gagal di-load!")
+		print("ERROR: Model TSCN gagal di-load! Path:", tile_asset_path)
 		return null
 
 	var tile_position = Vector3(x * map.tile_gap, map.tile_height, z * map.tile_gap)
@@ -68,19 +85,51 @@ func create_tile(x: int, z: int, map: Map) -> Tile:
 		var tile_name = "Tile_" + str(tile_id_counter)
 		var tile_obj = Tile.new(tile_id_counter, tile_name, tile_position)
 
-		# Tambajin instance Tile ke scene
+		# Tentukan rotasi berdasarkan posisi di grid
+		var rotation_angle = 0  # Default (menghadap atas)
+
+		if x == 0 and z == 0:  # Sudut kiri atas (Corner A)
+			rotation_angle = -90
+		elif x == map.size_a - 1 and z == 0:  # Sudut kanan atas (Corner B)
+			rotation_angle = 180
+		elif x == 0 and z == map.size_b - 1:  # Sudut kiri bawah (Corner C)
+			rotation_angle = 0
+		elif x == map.size_a - 1 and z == map.size_b - 1:  # Sudut kanan bawah (Corner D)
+			rotation_angle = 90
+		elif x == 0:  
+			rotation_angle = 0
+		elif x == map.size_a - 1:  
+			rotation_angle = 180
+		elif z == 0:  
+			rotation_angle = -90
+		elif z == map.size_b - 1: 
+			rotation_angle = 90
+
+		# Tambahkan instance Tile ke scene
+	
+		var is_corner = (x == 0 and z == 0) or \
+						(x == map.size_a - 1 and z == 0) or \
+						(x == 0 and z == map.size_b - 1) or \
+						(x == map.size_a - 1 and z == map.size_b - 1)
+		if not is_corner:
+			tile_instance.scale = Vector3(map.tile_scale * 1.2, map.tile_scale, map.tile_scale)
+		else:
+			tile_instance.scale = Vector3(map.tile_scale , map.tile_scale, map.tile_scale)
+
 		tile_instance.position = tile_position
-		tile_instance.scale = Vector3(map.tile_scale, map.tile_scale, map.tile_scale)
+		tile_instance.rotation_degrees.y = rotation_angle  # Set rotasi berdasarkan posisi
 		tile_instance.set_meta("tile_data", tile_obj)  # Simpan Tile sebagai metadata
 
 		add_child(tile_instance)
-		print("Tile Generated:", tile_obj.tile_name, "at", tile_obj.tile_coordinate)
+		print("Tile Generated:", tile_obj.tile_name, "at", tile_obj.tile_coordinate, "with rotation", rotation_angle)
 
 		tile_id_counter += 1  
 		return tile_obj
 	else:
 		print("ERROR: instantiate() gagal!")
 		return null
+
+
 
 
 func create_center_tiles(map: Map):

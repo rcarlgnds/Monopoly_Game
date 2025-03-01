@@ -44,6 +44,7 @@ var jumping = false
 var last_floor = true
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+
 # Buat dapetin tiles object dr game manager
 var tile_array = []
 func set_tile_objects(tiles):
@@ -70,7 +71,7 @@ func _input(event):
 	
 		
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("down") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 		jumping = true
 		anim_tree.set("parameters/conditions/jumping", true)
@@ -100,7 +101,6 @@ func get_center_position(map_size: int, tile_size: float) -> Vector3:
 
 
 func set_spawn_position(spawn_pos: Vector3):
-	"""Atur posisi spawn player di atas tile pertama."""
 	position = spawn_pos
 	print("Player spawned at:", position)
 

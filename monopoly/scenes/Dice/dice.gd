@@ -19,6 +19,7 @@ var dice_values = {
 
 func _ready():
 	start_pos = global_position
+	mass = 10
 
 func roll_dice_at_position(pos):
 	global_position = pos + Vector3(35, 15, 35)  

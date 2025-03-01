@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://0phmw2ibjm4o"]
+
+[ext_resource type="PackedScene" uid="uid://btrxks5ty38l4" path="res://Assets/Terrain_Assets/Models/GLB format/block-grass-large.glb" id="1_vc7q3"]
+[ext_resource type="PackedScene" uid="uid://kvfpvfadrh4t" path="res://Assets/Tiles/Building_2/Assets/gltf/road_corner.gltf" id="2_eiq8c"]
+
+[node name="block-grass-large2" instance=ExtResource("1_vc7q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00247371, 0.00181603, 0.00152421)
+
+[node name="road_corner2" parent="." index="1" instance=ExtResource("2_eiq8c")]
+transform = Transform3D(-3.49691e-08, 0, 0.8, 0, 0.723, 0, -0.8, 0, -3.49691e-08, 0.45, 1, -0.45)

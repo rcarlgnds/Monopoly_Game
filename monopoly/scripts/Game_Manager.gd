@@ -21,10 +21,7 @@ var tiles = []
 
 func _ready():
 	set_process_input(true)
-
-	# Buat instance map baru
-	var map = Map.new(9, 9, 8.5, -1, 4, "Default")
-
+	var map = Map.new(9, 9, 9, -1, 4, "Default")
 	map_generator = preload("res://scripts/Helper/Map_Helper.gd").new()
 	add_child(map_generator)
 
@@ -35,7 +32,7 @@ func _ready():
 	else:
 		print("GAGAL menghubungkan sinyal tiles_ready!")
 
-	map_generator.create_map(map)  # Generate map
+	map_generator.create_map(map)
 
 
 func create_player(p_id: String, p_nickname: String, p_skin: String) -> Node3D:
@@ -74,7 +71,6 @@ func _set_player_position():
 			print("ERROR: Tidak ada tile yang tersedia!")
 	else:
 		print("ERROR: map_generator tidak memiliki method get_tiles!")
-
 
 
 func spawn_player(spawn_pos: Vector3):

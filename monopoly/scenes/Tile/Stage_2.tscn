@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=3 uid="uid://dv40swq64tbw4"]
+
+[ext_resource type="PackedScene" uid="uid://btrxks5ty38l4" path="res://Assets/Terrain_Assets/Models/GLB format/block-grass-large.glb" id="1_a77u8"]
+[ext_resource type="PackedScene" uid="uid://b0s2jdkmwdkfj" path="res://Assets/Tiles/Building_1/Models/GLTF format/large_buildingA.glb" id="3_nuf7s"]
+[ext_resource type="PackedScene" uid="uid://bts744d8q45jr" path="res://Assets/Tiles/Building_2/Assets/gltf/streetlight.gltf" id="4_g3d3m"]
+[ext_resource type="PackedScene" uid="uid://5uh16si40wjh" path="res://Assets/Tiles/Building_2/Assets/gltf/car_sedan.gltf" id="5_reegr"]
+[ext_resource type="PackedScene" uid="uid://cr2f2tcg1awkt" path="res://Assets/Tiles/Building_2/Assets/gltf/car_police.gltf" id="6_m8iq1"]
+[ext_resource type="PackedScene" uid="uid://3v7rhhyue7ee" path="res://Assets/Tiles/Building_2/Assets/gltf/road_straight.gltf" id="6_vt1k1"]
+
+[node name="block-grass-large2" instance=ExtResource("1_a77u8")]
+transform = Transform3D(1.4, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="road_straight2" parent="." index="1" instance=ExtResource("6_vt1k1")]
+transform = Transform3D(0.67, 0, 0, 0, 0.74, 0, 0, 0, 1.05, 0.343572, 0.956977, -0.046366)
+
+[node name="large_buildingA2" parent="." index="2" instance=ExtResource("3_nuf7s")]
+transform = Transform3D(-3.40949e-08, 0, 0.53, 0, 0.71, 0, -0.78, 0, -2.3167e-08, -0.652624, 0.986322, -0.000801712)
+
+[node name="streetlight2" parent="." index="3" instance=ExtResource("4_g3d3m")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.3015, 0.992383, 0.923546)
+
+[node name="streetlight3" parent="." index="4" instance=ExtResource("4_g3d3m")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.3015, 0.992383, -0.918971)
+
+[node name="car_sedan2" parent="." index="5" instance=ExtResource("5_reegr")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.112799, 1.0387, -0.58342)
+
+[node name="car_police2" parent="." index="6" instance=ExtResource("6_m8iq1")]
+transform = Transform3D(-0.7, 0, -6.11959e-08, 0, 0.7, 0, 6.11959e-08, 0, -0.7, 0.810403, 1.03827, 0.624419)

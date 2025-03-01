@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3 uid="uid://cqfylxaifrg4k"]
+
+[ext_resource type="PackedScene" uid="uid://btrxks5ty38l4" path="res://Assets/Terrain_Assets/Models/GLB format/block-grass-large.glb" id="1_f1cob"]
+[ext_resource type="PackedScene" uid="uid://3v7rhhyue7ee" path="res://Assets/Tiles/Building_2/Assets/gltf/road_straight.gltf" id="2_s20y5"]
+[ext_resource type="PackedScene" uid="uid://kq6ss4q1xfld" path="res://Assets/Tiles/Building_1/Models/GLTF format/skyscraperF.glb" id="4_42r7g"]
+[ext_resource type="PackedScene" uid="uid://bts744d8q45jr" path="res://Assets/Tiles/Building_2/Assets/gltf/streetlight.gltf" id="4_hpug4"]
+[ext_resource type="PackedScene" uid="uid://crwu4m1yt2nnt" path="res://Assets/Tiles/Building_1/Models/GLTF format/skyscraperA.glb" id="5_7i1ru"]
+[ext_resource type="PackedScene" uid="uid://c08km1avfsvea" path="res://Assets/Tiles/Building_2/Assets/gltf/car_taxi.gltf" id="6_a3lq3"]
+[ext_resource type="PackedScene" uid="uid://b8kfrgkmhdgsk" path="res://Assets/Tiles/Building_2/Assets/gltf/car_hatchback.gltf" id="7_f075r"]
+
+[node name="block-grass-large2" instance=ExtResource("1_f1cob")]
+transform = Transform3D(1.4, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="road_straight2" parent="." index="1" instance=ExtResource("2_s20y5")]
+transform = Transform3D(0.67, 0, 0, 0, 0.75, 0, 0, 0, 1.1, 0.4, 0.95, 0)
+
+[node name="streetlight2" parent="." index="2" instance=ExtResource("4_hpug4")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.3015, 0.992383, 0.923546)
+
+[node name="streetlight3" parent="." index="3" instance=ExtResource("4_hpug4")]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.3015, 0.992383, -0.918971)
+
+[node name="skyscraperF2" parent="." index="4" instance=ExtResource("4_42r7g")]
+transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 1, 0, -0.5, 0, -2.18557e-08, -0.66008, 0.98409, 0.689864)
+
+[node name="skyscraperF3" parent="." index="5" instance=ExtResource("4_42r7g")]
+transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 1, 0, -0.5, 0, -2.18557e-08, -0.66008, 0.98409, -0.772051)
+
+[node name="skyscraperA2" parent="." index="6" instance=ExtResource("5_7i1ru")]
+transform = Transform3D(-3.27835e-08, 0, 0.44, 0, 1, 0, -0.75, 0, -1.9233e-08, -0.695868, 0.988766, -0.0314775)
+
+[node name="car_taxi2" parent="." index="7" instance=ExtResource("6_a3lq3")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.118455, 1.04199, 0.347066)
+
+[node name="car_hatchback2" parent="." index="8" instance=ExtResource("7_f075r")]
+transform = Transform3D(-0.55, 0, -1.22156e-07, 0, 0.809, 0, 8.30477e-08, 0, -0.809, 0.734409, 1.03006, -0.24093)
