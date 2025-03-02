@@ -85,16 +85,15 @@ func create_tile(x: int, z: int, map: Map) -> Tile:
 		var tile_name = "Tile_" + str(tile_id_counter)
 		var tile_obj = Tile.new(tile_id_counter, tile_name, tile_position)
 
-		# Tentukan rotasi berdasarkan posisi di grid
-		var rotation_angle = 0  # Default (menghadap atas)
+		var rotation_angle = 0  
 
-		if x == 0 and z == 0:  # Sudut kiri atas (Corner A)
+		if x == 0 and z == 0:  
 			rotation_angle = -90
-		elif x == map.size_a - 1 and z == 0:  # Sudut kanan atas (Corner B)
+		elif x == map.size_a - 1 and z == 0:
 			rotation_angle = 180
-		elif x == 0 and z == map.size_b - 1:  # Sudut kiri bawah (Corner C)
+		elif x == 0 and z == map.size_b - 1:  
 			rotation_angle = 0
-		elif x == map.size_a - 1 and z == map.size_b - 1:  # Sudut kanan bawah (Corner D)
+		elif x == map.size_a - 1 and z == map.size_b - 1:
 			rotation_angle = 90
 		elif x == 0:  
 			rotation_angle = 0
