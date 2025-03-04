@@ -11,13 +11,12 @@ func get_tiles():
 	
 
 func create_map(map: Map):
-	# Apus semua tile sebelumnya
 	for tile in tiles:
 		tile.queue_free()
 	tiles.clear()
-	tile_id_counter = 0  # Reset ID
+	tile_id_counter = 0 
 
-	var ordered_tiles = []  # Simpen urutan tile
+	var ordered_tiles = []  
 
 	# Utk tile di sisi atas (dari kiri ke kanan)
 	for z in range(map.size_b):
@@ -52,7 +51,6 @@ func create_map(map: Map):
 	print("Sinyal tiles_ready dipancarkan!")
 
 
-
 func create_tile(x: int, z: int, map: Map) -> Tile:
 	# Path untuk tile sudut (corner)
 	var corner_a_path = "res://scenes/Tile/Corner.tscn"
@@ -71,7 +69,7 @@ func create_tile(x: int, z: int, map: Map) -> Tile:
 	elif x == map.size_a - 1 and z == map.size_b - 1:
 		tile_asset_path = corner_d_path
 
-	# Load tile yang sesuai
+
 	var tile_scene = load(tile_asset_path)
 	if not tile_scene:
 		print("ERROR: Model TSCN gagal di-load! Path:", tile_asset_path)
@@ -81,7 +79,6 @@ func create_tile(x: int, z: int, map: Map) -> Tile:
 	var tile_instance = tile_scene.instantiate()
 
 	if tile_instance:
-		# Buat objek Tile dengan properti
 		var tile_name = "Tile_" + str(tile_id_counter)
 		var tile_obj = Tile.new(tile_id_counter, tile_name, tile_position)
 
@@ -103,8 +100,6 @@ func create_tile(x: int, z: int, map: Map) -> Tile:
 			rotation_angle = -90
 		elif z == map.size_b - 1: 
 			rotation_angle = 90
-
-		# Tambahkan instance Tile ke scene
 	
 		var is_corner = (x == 0 and z == 0) or \
 						(x == map.size_a - 1 and z == 0) or \
@@ -116,8 +111,8 @@ func create_tile(x: int, z: int, map: Map) -> Tile:
 			tile_instance.scale = Vector3(map.tile_scale , map.tile_scale, map.tile_scale)
 
 		tile_instance.position = tile_position
-		tile_instance.rotation_degrees.y = rotation_angle  # Set rotasi berdasarkan posisi
-		tile_instance.set_meta("tile_data", tile_obj)  # Simpan Tile sebagai metadata
+		tile_instance.rotation_degrees.y = rotation_angle  
+		tile_instance.set_meta("tile_data", tile_obj)  
 
 		add_child(tile_instance)
 		print("Tile Generated:", tile_obj.tile_name, "at", tile_obj.tile_coordinate, "with rotation", rotation_angle)
@@ -169,19 +164,19 @@ func create_center_tiles(map: Map):
 
 	# Tambahin pagar buat center tile  
 	var fence_positions = [
-		Vector3(center_x * map.tile_gap, map.tile_height, center_z * map.tile_gap),  # Kiri Atas
-		Vector3((center_x + center_tile_count - 1) * map.tile_gap, map.tile_height, center_z * map.tile_gap),  # Kanan Atas
-		Vector3(center_x * map.tile_gap, map.tile_height, (center_z + center_tile_count - 1) * map.tile_gap),  # Kiri Bawah
-		Vector3((center_x + center_tile_count - 1) * map.tile_gap, map.tile_height, (center_z + center_tile_count - 1) * map.tile_gap)  # Kanan Bawah
+		Vector3(center_x * map.tile_gap, map.tile_height, center_z * map.tile_gap),
+		Vector3((center_x + center_tile_count - 1) * map.tile_gap, map.tile_height, center_z * map.tile_gap), 
+		Vector3(center_x * map.tile_gap, map.tile_height, (center_z + center_tile_count - 1) * map.tile_gap),
+		Vector3((center_x + center_tile_count - 1) * map.tile_gap, map.tile_height, (center_z + center_tile_count - 1) * map.tile_gap)  
 	]
 
-	var fence_rotations = [-90, 180, 0, 90]  # Rotasi untuk masing-masing sudut
+	var fence_rotations = [-90, 180, 0, 90]  
 
 	for i in range(4):
 		var fence_instance = fence_scene.instantiate()
 		if fence_instance:
-			fence_instance.position = fence_positions[i] + Vector3(0, 4, 0)  # 🔼 Naikkan tinggi pagar
-			fence_instance.rotation_degrees.y = fence_rotations[i]  # Putar pagar sesuai posisinya
+			fence_instance.position = fence_positions[i] + Vector3(0, 4, 0)
+			fence_instance.rotation_degrees.y = fence_rotations[i]  
 			fence_instance.scale = Vector3(
 				map.tile_scale * fence_scale_factor, 
 				map.tile_scale * fence_scale_factor, 

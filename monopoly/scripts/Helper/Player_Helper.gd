@@ -13,7 +13,7 @@ func init_player(p_id: String, p_nickname: String, p_skin: String):
 	skin = p_skin
 	current_tile = 0
 	money = 50.0
-	
+
 
 # Animation
 @onready var model = $Rig
@@ -58,17 +58,6 @@ func _ready():
 	await get_tree().process_frame  
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
-
-func _input(event):		
-	if Input.is_action_just_pressed("ui_cancel"):
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			get_tree().quit()
-
-	if Input.is_action_just_pressed("up"):
-		roll_and_jump()
-	
 		
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("down") and is_on_floor():
@@ -88,17 +77,7 @@ func _physics_process(delta: float) -> void:
 	
 	last_floor = is_on_floor()
 	move_and_slide()
-
-
-func get_center_position(map_size: int, tile_size: float) -> Vector3:
-	# Pastikan map_size adalah jumlah tile (bukan panjang total)
-	var total_size = (map_size - 1) * tile_size
-	var center_x = total_size / 2
-	var center_z = total_size / 2
 	
-	# Tinggi dice bisa disesuaikan
-	return Vector3(center_x, 4.5, center_z)
-
 
 func set_spawn_position(spawn_pos: Vector3):
 	position = spawn_pos
@@ -199,12 +178,13 @@ func jump():
 	
 	print("Jumping to:", jump_target, "(Tile Index:", next_index, ") Facing Direction:", direction)
 
-
+signal finished_moving
 func jumps(dice_result: int):
-	# Lompat sesuai angka yang didapat
 	for i in range(dice_result):
 		jump()
 		await get_tree().create_timer(1.2).timeout
+	 
+	finished_moving.emit()
 
 
 func find_nearest_tile(player_pos: Vector3, tile_objects):
@@ -220,48 +200,3 @@ func find_nearest_tile(player_pos: Vector3, tile_objects):
 			closest_tile = tile
 	
 	return closest_tile
-
-
-# Dice
-@export var dice_scene: PackedScene
-
-var total_dice_result = 0  # Variabel untuk menyimpan total hasil dadu
-var pending_dice_rolls = 0  # Menghitung jumlah dadu yang sedang diproses
-
-func roll_and_jump():
-	if not dice_scene:
-		dice_scene = load("res://scenes/Dice/Dice.tscn")  # Load jika belum terhubung
-		
-	if not dice_scene:
-		print("Error: Dice scene not assigned!")
-		return
-
-	await get_tree().process_frame  # Tunggu satu frame agar posisi aman
-
-	var dice_positions = [
-		get_center_position(11, 2) + Vector3(33, 5, 15),
-		get_center_position(11, 2) + Vector3(25, 5, 17)  # Tambah jarak biat kaga nabrak daduny
-	]
-
-	total_dice_result = 0  # Reset hasil total
-	pending_dice_rolls = dice_positions.size()  # Hitung jumlah dadu yang akan dilempar
-
-	for pos in dice_positions:
-		var dice_instance = dice_scene.instantiate()
-		get_parent().add_child(dice_instance)  # Add dadu ke scene
-
-		dice_instance.roll_dice_at_position(pos)
-
-		# Connect sinyal roll_finished ke fungsi yang mengumpulkan hasil
-		dice_instance.roll_finished.connect(_on_dice_roll_finished)
-
-		print("Dadu dilempar di posisi:", pos)
-
-func _on_dice_roll_finished(dice_result: int):
-	total_dice_result += dice_result  # Tambahkan hasil dadu ke total
-	pending_dice_rolls -= 1  # Kurangi jumlah dadu yang belum selesai
-
-	if pending_dice_rolls == 0:  # Jika semua dadu sudah selesai
-		print("Total hasil dadu:", total_dice_result)
-		jumps(total_dice_result)  # Lompat sesuai hasil total
-		

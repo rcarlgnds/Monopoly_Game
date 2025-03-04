@@ -13,6 +13,7 @@ transform = Transform3D(1.4, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="road_straight2" parent="." index="1" instance=ExtResource("2_s20y5")]
 transform = Transform3D(0.67, 0, 0, 0, 0.75, 0, 0, 0, 1.1, 0.4, 0.95, 0)
+visible = false
 
 [node name="streetlight2" parent="." index="2" instance=ExtResource("4_hpug4")]
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.3015, 0.992383, 0.923546)
@@ -21,16 +22,18 @@ transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.301
 transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, -0.3015, 0.992383, -0.918971)
 
 [node name="skyscraperF2" parent="." index="4" instance=ExtResource("4_42r7g")]
-transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 1, 0, -0.5, 0, -2.18557e-08, -0.66008, 0.98409, 0.689864)
+transform = Transform3D(-2.49155e-08, 0, 0.57, 0, 0.5, 0, -0.57, 0, -2.49155e-08, -0.66008, 0.98409, 0.689864)
 
 [node name="skyscraperF3" parent="." index="5" instance=ExtResource("4_42r7g")]
-transform = Transform3D(-2.18557e-08, 0, 0.5, 0, 1, 0, -0.5, 0, -2.18557e-08, -0.66008, 0.98409, -0.772051)
+transform = Transform3D(-2.49155e-08, 0, 0.57, 0, 0.5, 0, -0.57, 0, -2.49155e-08, -0.66008, 0.98409, -0.772051)
 
 [node name="skyscraperA2" parent="." index="6" instance=ExtResource("5_7i1ru")]
-transform = Transform3D(-3.27835e-08, 0, 0.44, 0, 1, 0, -0.75, 0, -1.9233e-08, -0.695868, 0.988766, -0.0314775)
+transform = Transform3D(-2.49155e-08, 0, 0.57, 0, 0.5, 0, -0.57, 0, -2.49155e-08, -0.695868, 0.988766, -0.0314775)
 
 [node name="car_taxi2" parent="." index="7" instance=ExtResource("6_a3lq3")]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, -0.118455, 1.04199, 0.347066)
+visible = false
 
 [node name="car_hatchback2" parent="." index="8" instance=ExtResource("7_f075r")]
 transform = Transform3D(-0.55, 0, -1.22156e-07, 0, 0.809, 0, 8.30477e-08, 0, -0.809, 0.734409, 1.03006, -0.24093)
+visible = false

@@ -60,7 +60,7 @@ func _on_sleeping_state_changed() -> void:
 					print("❌ ERROR: %s tidak ditemukan di dice_values!" % raycast.name)
 				else:
 					print("✅ Nilai dadu:", landed_value)
-					break  # Stop loop jika sudah ketemu angka dadu
+					break 
 
 		if landed_value != null:
 			roll_finished.emit(landed_value)  # Kirim sinyal dengan angka dadu

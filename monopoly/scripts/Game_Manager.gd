@@ -4,8 +4,6 @@ var map_generator: Node
 
 @onready var camera_manager = $Map/Camera
 
-var player  
-
 var PlayerHelper = preload("res://scripts/Helper/Player_Helper.gd").new()
 @onready var knight = preload("res://scenes/Player/Model/Knight_Model.tscn")
 @onready var mage = preload("res://scenes/Player/Model/Mage_Model.tscn")
@@ -14,9 +12,11 @@ var PlayerHelper = preload("res://scripts/Helper/Player_Helper.gd").new()
 @onready var rogue = preload("res://scenes/Player/Model/Rogue_Model.tscn")
 
 # Data 
-var turn = 1
 var players = []
 var tiles = []  
+
+var current_turn = 0 
+var is_turn_active = false  
 
 
 func _ready():
@@ -33,6 +33,23 @@ func _ready():
 		print("GAGAL menghubungkan sinyal tiles_ready!")
 
 	map_generator.create_map(map)
+
+
+func _input(event):
+	if event.is_action_pressed("down"):
+		if camera_manager:
+			camera_manager.switch_camera()
+		else:
+			print("ERROR: camera_manager belum terinisialisasi!")
+	
+	if Input.is_action_just_pressed("ui_cancel"):
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		else:
+			get_tree().quit()
+
+	if Input.is_action_just_pressed("up"):
+		roll_dice()
 
 
 func create_player(p_id: String, p_nickname: String, p_skin: String) -> Node3D:
@@ -75,19 +92,103 @@ func _set_player_position():
 
 func spawn_player(spawn_pos: Vector3):
 	var player_1 = create_player("001", "IO", "Barbarian")
+	var player_2 = create_player("002", "JZ", "Mage")
+	var player_3 = create_player("003", "ZZ", "Knight")
+
 	add_child(player_1)
-	
+	add_child(player_2)
+	add_child(player_3)
+
 	players.append(player_1)
-	player_1.set_spawn_position(spawn_pos)
+	players.append(player_2)
+	players.append(player_3)
+
+	# Atur posisi pemain di awal
+	var spawn_offsets = [
+		Vector3(0, 0, 0),
+		Vector3(2, 0, 0),
+		Vector3(-2, 0, 0)
+	]
+
+	player_1.set_spawn_position(spawn_pos + spawn_offsets[0])
+	player_2.set_spawn_position(spawn_pos + spawn_offsets[1])
+	player_3.set_spawn_position(spawn_pos + spawn_offsets[2])
+
 	player_1.set_tile_objects(tiles)
-	
-	
-	print("Player spawned:", player_1.nickname)
+	player_2.set_tile_objects(tiles)
+	player_3.set_tile_objects(tiles)
+
+	print("Player 1 spawned:", player_1.nickname)
+	print("Player 2 spawned:", player_2.nickname)
+	print("Player 3 spawned:", player_3.nickname)
 
 
-func _input(event):
-	if event.is_action_pressed("down"):
-		if camera_manager:
-			camera_manager.switch_camera()
-		else:
-			print("ERROR: camera_manager belum terinisialisasi!")
+
+# Dice & Turn
+@export var dice_scene: PackedScene
+
+var total_dice_result = 0  
+var pending_dice_rolls = 0 
+
+func get_center_position(map_size: int, tile_size: float) -> Vector3:
+	var total_size = (map_size - 1) * tile_size
+	var center_x = total_size / 2
+	var center_z = total_size / 2
+	
+	return Vector3(center_x, 4.5, center_z)
+	
+	
+func roll_dice():
+	if is_turn_active:
+		print("Player masih berjalan! Tunggu giliran selesai.")
+		return  
+
+	is_turn_active = true 
+
+	if not dice_scene:
+		dice_scene = load("res://scenes/Dice/Dice.tscn")  
+		
+	if not dice_scene:
+		print("Error: Dice scene not assigned!")
+		return
+
+	await get_tree().process_frame  
+
+	var dice_positions = [
+		get_center_position(11, 2) + Vector3(33, 5, 15),
+		get_center_position(11, 2) + Vector3(25, 5, 17)
+	]
+
+	total_dice_result = 0  
+	pending_dice_rolls = dice_positions.size()  
+
+	for pos in dice_positions:
+		var dice_instance = dice_scene.instantiate()
+		get_parent().add_child(dice_instance)  
+		dice_instance.roll_dice_at_position(pos)
+
+		dice_instance.roll_finished.connect(_on_dice_roll_finished)
+
+		print("Dadu dilempar di posisi:", pos)
+
+
+
+func _on_dice_roll_finished(dice_result: int):
+	total_dice_result += dice_result  
+	pending_dice_rolls -= 1  
+
+	if pending_dice_rolls == 0:  
+		print("Total hasil dadu:", total_dice_result)
+		var current_player = players[current_turn]
+		
+		print("Giliran:", current_player.nickname)
+		current_player.jumps(total_dice_result)  
+
+		await current_player.finished_moving  
+
+		next_turn()  
+
+func next_turn():
+	current_turn = (current_turn + 1) % players.size()  
+	is_turn_active = false  
+	print("Sekarang giliran:", players[current_turn].nickname)
