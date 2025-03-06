@@ -12,12 +12,14 @@ var PlayerHelper = preload("res://scripts/Helper/Player_Helper.gd").new()
 @onready var rogue = preload("res://scenes/Player/Model/Rogue_Model.tscn")
 
 # Data 
-var players = []
-var tiles = []  
+var players = {}
+var tiles = []
 
 var current_turn = 0 
 var is_turn_active = false  
 
+# Socket
+var ws_client: SocketClient
 
 func _ready():
 	set_process_input(true)
@@ -33,6 +35,23 @@ func _ready():
 		print("GAGAL menghubungkan sinyal tiles_ready!")
 
 	map_generator.create_map(map)
+	
+	# Init Socket Client
+	ws_client = SocketClient.new()
+	add_child(ws_client)
+	
+	if ws_client:
+		ws_client.connect_to_server()
+		ws_client.connect("player_joined", Callable(self, "_on_player_joined"))
+		ws_client.connect("player_left", Callable(self, "_on_player_left"))
+		ws_client.connect("dice_rolled", Callable(self, "_on_dice_rolled"))
+		ws_client.connect("player_jumped", Callable(self, "_on_player_jump"))
+		ws_client.connect("turn_synced", Callable(self, "_on_turn_synced"))
+	else:
+		print("❌ Failed To Connect to Socket Server!")
+		
+	await get_tree().create_timer(1.0).timeout 
+	init_dice()
 
 
 func _input(event):
@@ -41,7 +60,7 @@ func _input(event):
 			camera_manager.switch_camera()
 		else:
 			print("ERROR: camera_manager belum terinisialisasi!")
-	
+
 	if Input.is_action_just_pressed("ui_cancel"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -51,78 +70,52 @@ func _input(event):
 	if Input.is_action_just_pressed("up"):
 		roll_dice()
 
-
 func create_player(p_id: String, p_nickname: String, p_skin: String) -> Node3D:
 	var player_instance
-	
 	match p_skin:
-		"Knight":
-			player_instance = knight.instantiate()
-		"Mage":
-			player_instance = mage.instantiate()
-		"Barbarian":
-			player_instance = barbarian.instantiate()
-		"Assassin":
-			player_instance = assassin.instantiate()
-		"Rogue":
-			player_instance = rogue.instantiate()
-		_:
-			print("WARNING: Skin tidak dikenal, default ke Knight.")
-			player_instance = knight.instantiate() 
-			
+		"Knight": player_instance = knight.instantiate()
+		"Mage": player_instance = mage.instantiate()
+		"Barbarian": player_instance = barbarian.instantiate()
+		"Assassin": player_instance = assassin.instantiate()
+		"Rogue": player_instance = rogue.instantiate()
+		_: player_instance = knight.instantiate()
+
 	player_instance.init_player(p_id, p_nickname, p_skin) 
 	add_child(player_instance) 
 	return player_instance
 
+func spawn_player(playerID: String, spawn_pos: Vector3, p_skin: String):
+	if players.has(playerID):
+		return
+
+	var new_player = create_player(playerID, "Player" + str(players.size() + 1), p_skin)
+	new_player.global_transform.origin = spawn_pos 
+	new_player.set_spawn_position(spawn_pos)
+	new_player.set_tile_objects(tiles)
+	new_player.set_player_id(playerID)
+	players[playerID] = new_player
 	
 func _set_player_position():
 	if map_generator.has_method("get_tiles"):
 		tiles = map_generator.get_tiles()  
 		print("Tiles Generated:", tiles.size())  
-
-		if tiles.size() > 0:
-			var first_tile = tiles[0]  
-			var first_tile_pos = first_tile.tile_coordinate + Vector3(0, 5, 0)  
-			spawn_player(first_tile_pos)
-		else:
-			print("ERROR: Tidak ada tile yang tersedia!")
 	else:
 		print("ERROR: map_generator tidak memiliki method get_tiles!")
 
+func _on_player_joined(player_id: String, spawn_pos: Vector3, player_skin: String):
+	if ws_client and ws_client.player_id == player_id:
+		return
 
-func spawn_player(spawn_pos: Vector3):
-	var player_1 = create_player("001", "IO", "Barbarian")
-	var player_2 = create_player("002", "JZ", "Mage")
-	var player_3 = create_player("003", "ZZ", "Knight")
+	if not players.has(player_id):
+		spawn_player(player_id, spawn_pos, player_skin)
 
-	add_child(player_1)
-	add_child(player_2)
-	add_child(player_3)
-
-	players.append(player_1)
-	players.append(player_2)
-	players.append(player_3)
-
-	# Atur posisi pemain di awal
-	var spawn_offsets = [
-		Vector3(0, 0, 0),
-		Vector3(2, 0, 0),
-		Vector3(-2, 0, 0)
-	]
-
-	player_1.set_spawn_position(spawn_pos + spawn_offsets[0])
-	player_2.set_spawn_position(spawn_pos + spawn_offsets[1])
-	player_3.set_spawn_position(spawn_pos + spawn_offsets[2])
-
-	player_1.set_tile_objects(tiles)
-	player_2.set_tile_objects(tiles)
-	player_3.set_tile_objects(tiles)
-
-	print("Player 1 spawned:", player_1.nickname)
-	print("Player 2 spawned:", player_2.nickname)
-	print("Player 3 spawned:", player_3.nickname)
-
-
+func _on_player_left(player_id: String):
+	if players.has(player_id):
+		var player_to_remove = players[player_id]
+		if player_to_remove:
+			player_to_remove.queue_free()  
+			await get_tree().process_frame  
+		players.erase(player_id)
 
 # Dice & Turn
 @export var dice_scene: PackedScene
@@ -132,63 +125,139 @@ var pending_dice_rolls = 0
 
 func get_center_position(map_size: int, tile_size: float) -> Vector3:
 	var total_size = (map_size - 1) * tile_size
-	var center_x = total_size / 2
-	var center_z = total_size / 2
-	
-	return Vector3(center_x, 4.5, center_z)
-	
-	
+	return Vector3(total_size / 2, 4.5, total_size / 2)
+
 func roll_dice():
-	if is_turn_active:
-		print("Player masih berjalan! Tunggu giliran selesai.")
+	if is_turn_active or players.size() == 0:
 		return  
 
-	is_turn_active = true 
+	is_turn_active = true  
+
+	var current_player = players[ws_client.current_turn_player_id]
+	print("🎲 Player rolling dice:", current_player.get_player_id())
+
+	await get_tree().create_timer(0.2).timeout
 
 	if not dice_scene:
 		dice_scene = load("res://scenes/Dice/Dice.tscn")  
-		
 	if not dice_scene:
-		print("Error: Dice scene not assigned!")
+		print("❌ Error: Dice scene not assigned!")
 		return
-
-	await get_tree().process_frame  
 
 	var dice_positions = [
 		get_center_position(11, 2) + Vector3(33, 5, 15),
 		get_center_position(11, 2) + Vector3(25, 5, 17)
 	]
-
+	
+	for child in get_children():
+		if child.name.begins_with("Dice"):
+			child.queue_free()
+	
 	total_dice_result = 0  
 	pending_dice_rolls = dice_positions.size()  
+	print("current_player: ", current_player.id)
+	
+	var dice_data = {
+		"player_id": current_player.get_player_id(),
+		"dice_positions": []
+	}
 
 	for pos in dice_positions:
-		var dice_instance = dice_scene.instantiate()
-		get_parent().add_child(dice_instance)  
-		dice_instance.roll_dice_at_position(pos)
+		dice_data["dice_positions"].append({"x": pos.x, "y": pos.y, "z": pos.z})  
 
-		dice_instance.roll_finished.connect(_on_dice_roll_finished)
-
-		print("Dadu dilempar di posisi:", pos)
+	print("📡 Broadcasting Dice Roll:", JSON.stringify(dice_data))
+	ws_client.send_to_server("roll_dice", dice_data)
 
 
+func _spawn_dice(pos: Vector3, rotations:Vector3, throw_vector: Vector3) -> Node3D:
+	print("🛠️ Spawning dice at:", pos)
+	var dice_instance = dice_scene.instantiate()
+	add_child(dice_instance) 
+	dice_instance.global_transform.origin = pos
+	dice_instance.roll_dice_at_position(pos, rotations, throw_vector)
+	dice_instance.roll_finished.connect(_on_dice_roll_finished)
+	return dice_instance
 
+func _on_dice_rolled(dice_positions, rotations, throw_vector):
+	print("🎲 Dice positions received:", dice_positions)
+	print("rotations:", rotations)
+	print("throw vector:", throw_vector)
+
+	var rotation_vec = Vector3.ZERO
+	if typeof(rotations) == TYPE_ARRAY and rotations.size() >= 3:
+		rotation_vec = Vector3(float(rotations[0]), float(rotations[1]), float(rotations[2]))
+
+	if typeof(dice_positions) == TYPE_ARRAY:
+		for pos in dice_positions:
+			if typeof(pos) == TYPE_DICTIONARY and "x" in pos and "y" in pos and "z" in pos:
+				var spawn_pos = Vector3(float(pos["x"]), float(pos["y"]), float(pos["z"]))
+				_spawn_dice(spawn_pos, rotation_vec, throw_vector)  
+				print("✅ Dice spawned at", spawn_pos)
+			else:
+				print("⚠️ Invalid dice position format:", pos)
+	else:
+		print("❌ Error: dice_positions bukan Array!", dice_positions)
+
+		
 func _on_dice_roll_finished(dice_result: int):
 	total_dice_result += dice_result  
 	pending_dice_rolls -= 1  
 
 	if pending_dice_rolls == 0:  
-		print("Total hasil dadu:", total_dice_result)
-		var current_player = players[current_turn]
+		#var current_player = players.values()[current_turn]
+		var current_player = players[ws_client.current_turn_player_id]
+		print("testt:",current_player.id)
+		print("Players Dictionary:", players)
+		print("Current Turn Player ID:", ws_client.current_turn_player_id)
+		print("Player Exists:", players.has(ws_client.current_turn_player_id))
+
+		#var current_player = players[ws_client.current_turn_player_id.id
+		print("roll dice current player", current_player)
+		var move_data = {
+			"player_id": current_player.get_player_id(),
+			"steps": total_dice_result
+		}
 		
-		print("Giliran:", current_player.nickname)
+		ws_client.send_to_server("player_jump", move_data)
+		
 		current_player.jumps(total_dice_result)  
-
 		await current_player.finished_moving  
-
-		next_turn()  
+		next_turn()
+		
+func _on_player_jump(player_id: String, steps: int):
+	print("player jump", steps)
+	print("Players", players[player_id].id)
+	if players.has(player_id):
+		var player = players[player_id]
+		player.jumps(steps)
+	else:
+		print("Failed to jump")
+		
+	
+func _on_turn_synced(player_id):
+	print("🌀 Turn Synced! Now it's Player", player_id, "'s turn!")
 
 func next_turn():
-	current_turn = (current_turn + 1) % players.size()  
-	is_turn_active = false  
-	print("Sekarang giliran:", players[current_turn].nickname)
+	if players.size() == 0:
+		print("⚠️ No players available for the next turn!")
+		return
+	
+	is_turn_active = false
+	print("🎲 It's Player", players.keys()[current_turn], "'s turn!")
+
+
+	
+func init_dice():
+	if not dice_scene:
+		dice_scene = load("res://scenes/Dice/Dice.tscn")
+	if not dice_scene:
+		print("❌ Error: Dice scene not assigned!")
+		return
+
+	var dice_positions = [
+		get_center_position(11, 2) + Vector3(33, 5, 15),
+		get_center_position(11, 2) + Vector3(25, 5, 17)
+	]
+#
+
+	

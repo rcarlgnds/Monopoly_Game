@@ -1,5 +1,6 @@
 extends CharacterBody3D
 
+@export var player_id: String = "" 
 # Object
 var id: String
 var nickname: String
@@ -200,3 +201,13 @@ func find_nearest_tile(player_pos: Vector3, tile_objects):
 			closest_tile = tile
 	
 	return closest_tile
+
+
+func set_player_id(id:String):
+	player_id = id
+	print(player_id)
+	
+	
+func get_player_id() -> String:
+	return player_id
+	

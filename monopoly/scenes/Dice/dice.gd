@@ -21,21 +21,23 @@ func _ready():
 	start_pos = global_position
 	mass = 10
 
-func roll_dice_at_position(pos):
-	global_position = pos + Vector3(35, 15, 35)  
-	_roll()
+func roll_dice_at_position(pos, rotation, throw_vector):
+	global_position = pos + Vector3(35, 15, 35)
+	_roll(rotation, throw_vector)
 
-func _roll():
+func _roll(rotation, throw_vector_dice):
 	sleeping = false
 	freeze = false
 	linear_velocity = Vector3.ZERO
 	angular_velocity = Vector3.ZERO
 	
-	transform.basis = Basis(Vector3.RIGHT, randf_range(0, 2 * PI)) * transform.basis
-	transform.basis = Basis(Vector3.UP, randf_range(0, 2 * PI)) * transform.basis
-	transform.basis = Basis(Vector3.FORWARD, randf_range(0, 2 * PI)) * transform.basis
+	transform.basis = Basis(Vector3.RIGHT, rotation[0]) * transform.basis
+	transform.basis = Basis(Vector3.UP, rotation[1]) * transform.basis
+	transform.basis = Basis(Vector3.FORWARD, rotation[2]) * transform.basis
+	print("dice vector data:", throw_vector_dice)
 	
-	var throw_vector = Vector3(randf_range(-1, 1), 0, randf_range(-1, 1)).normalized()
+	var throw_vector = Vector3(throw_vector_dice[0], throw_vector_dice[1], throw_vector_dice[2]).normalized()
+	
 	angular_velocity = throw_vector * roll_strength / 2 
 	apply_central_force(throw_vector * roll_strength)
 	is_rolling = true
