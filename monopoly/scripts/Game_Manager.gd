@@ -132,7 +132,7 @@ func roll_dice():
 		return  
 
 	print("turn:", ws_client.current_turn_player_id)
-	print("player kuntul", ws_client.player_id)
+	print("player ", ws_client.player_id)
 	if ws_client.player_id != ws_client.current_turn_player_id:
 		print("⛔ Not your turn! Current turn:", ws_client.current_turn_player_id)
 		return  

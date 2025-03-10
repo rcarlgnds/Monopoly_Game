@@ -175,4 +175,3 @@ func _on_message_received(message: String):
 				current_turn_player_id = data["currentTurnPlayerId"]
 				print("current turn",data["currentTurnPlayerId"])
 				emit_signal("turn_synced", current_turn_player_id)
-				
