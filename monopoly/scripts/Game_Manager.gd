@@ -131,8 +131,13 @@ func roll_dice():
 	if is_turn_active or players.size() == 0:
 		return  
 
-	is_turn_active = true  
+	print("turn:", ws_client.current_turn_player_id)
+	print("player kuntul", ws_client.player_id)
+	if ws_client.player_id != ws_client.current_turn_player_id:
+		print("⛔ Not your turn! Current turn:", ws_client.current_turn_player_id)
+		return  
 
+	is_turn_active = true  
 	var current_player = players[ws_client.current_turn_player_id]
 	print("🎲 Player rolling dice:", current_player.get_player_id())
 
@@ -148,15 +153,14 @@ func roll_dice():
 		get_center_position(11, 2) + Vector3(33, 5, 15),
 		get_center_position(11, 2) + Vector3(25, 5, 17)
 	]
-	
+
 	for child in get_children():
 		if child.name.begins_with("Dice"):
 			child.queue_free()
-	
+
 	total_dice_result = 0  
 	pending_dice_rolls = dice_positions.size()  
-	print("current_player: ", current_player.id)
-	
+
 	var dice_data = {
 		"player_id": current_player.get_player_id(),
 		"dice_positions": []
@@ -167,6 +171,7 @@ func roll_dice():
 
 	print("📡 Broadcasting Dice Roll:", JSON.stringify(dice_data))
 	ws_client.send_to_server("roll_dice", dice_data)
+
 
 
 func _spawn_dice(pos: Vector3, rotations:Vector3, throw_vector: Vector3) -> Node3D:

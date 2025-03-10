@@ -118,22 +118,27 @@ func _on_message_received(message: String):
 
 
 			"player_joined":
-				if "player_id" in data:
+				print("player Joined: ", data)
+
+				if "playerId" in data:  
 					if player_id == "":
-						player_id = data["player_id"] 
+						player_id = data["playerId"]
 						print("✅ Player ID set to:", player_id)
 
-					var x = data.get("x", 0)
-					var y = data.get("y", 0)
-					var z = data.get("z", 0)
-					var pos = Vector3(x, y, z)
+				var position = data.get("position", {}) 
+				var x = position.get("x", 0)
+				var y = position.get("y", 0)
+				var z = position.get("z", 0)
+				var pos = Vector3(x, y, z)
 
-					var skin = data.get("player_skin", "Knight")
+				var skin = data.get("player_skin", "Knight")
 
-					print("🎨 Skin received from server:", skin) 
+				print("🎨 Skin received from server:", skin) 
 
-					players[data["player_id"]] = {"pos": pos, "skin": skin}
-					emit_signal("player_joined", data["player_id"], pos, skin)
+				players[data["playerId"]] = {"pos": pos, "skin": skin}
+				
+				emit_signal("player_joined", data["playerId"], pos, skin)
+
 					
 			"player_left":
 				if "playerId" in data:
